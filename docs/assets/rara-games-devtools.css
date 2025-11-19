@@ -356,12 +356,13 @@ pre[class*="language-"] {
 /* Gamma embed container */
 .gamma-embed {
   margin-top: 1rem;
-  border-radius: 1rem;
-  overflow: hidden;
-  border: 1px solid var(--border-soft);
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.55);
-  background: radial-gradient(circle at top left, #262b41, #141728);
+  border-radius: 0;               /* SHARP EDGES */
+  overflow: visable;               
+  border: none;                   /* OPTIONAL → removes your themed border */
+  box-shadow: none;               /* OPTIONAL → removes glow/shadow */
+  background: none;               /* OPTIONAL → no background behind Gamma */
 }
+
 
 /* Responsive aspect ratio wrapper for iframe/embed */
 .gamma-embed-inner {
