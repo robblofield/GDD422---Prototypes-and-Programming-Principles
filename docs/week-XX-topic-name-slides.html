@@ -62,19 +62,59 @@
     <section class="lecture-section" id="slides">
       <h2>Lecture Slides</h2>
 
-    <!-- GAMMA EMBED BLOCK -->
-<div class="gamma-embed">
-  <div class="gamma-embed-inner">
-    <!-- Replace src with your Gamma embed URL -->
-    <iframe
-      src="https://gamma.app/embed/yp6kgzmmnp2hvbc"
-      loading="lazy"
-      allowfullscreen
-      allow="fullscreen"
-      style="border: 0;"
-    ></iframe>
+ <!-- GAMMA EMBED BLOCK -->
+<section class="lecture-section" id="slides">
+  <h2>Lecture Slides</h2>
+
+  <!-- FULLSCREEN TOGGLE BUTTON -->
+  <button id="fullscreenBtn" class="resource-pill" style="margin-bottom: 1rem;">
+    ⛶ Fullscreen Slides
+  </button>
+
+  <!-- EMBED WRAPPER -->
+  <div class="gamma-embed">
+    <div class="gamma-embed-inner">
+
+      <iframe
+        id="gammaFrame"
+        src="https://gamma.app/embed/yp6kgzmmnp2hvbc"
+        loading="lazy"
+        allowfullscreen
+        allow="fullscreen"
+        style="border: 0;"
+      ></iframe>
+
+    </div>
   </div>
-</div>
+</section>
+
+<!-- FULLSCREEN JS -->
+<script>
+  const iframe = document.getElementById('gammaFrame');
+  const btn = document.getElementById('fullscreenBtn');
+
+  btn.addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+      iframe.requestFullscreen().then(() => {
+        btn.textContent = "⛶ Exit Fullscreen";
+      }).catch(err => {
+        console.error("Fullscreen error: ", err);
+      });
+    } else {
+      document.exitFullscreen().then(() => {
+        btn.textContent = "⛶ Fullscreen Slides";
+      });
+    }
+  });
+
+  // Ensure the button resets if user exits with ESC or browser UI
+  document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement) {
+      btn.textContent = "⛶ Fullscreen Slides";
+    }
+  });
+</script>
+
 
 
     <hr />
