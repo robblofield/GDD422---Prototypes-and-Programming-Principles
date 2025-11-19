@@ -34,7 +34,8 @@ a:hover {
   text-decoration: underline;
 }
 
-header {
+/* Top site header (sticky) */
+.site-header {
   position: sticky;
   top: 0;
   z-index: 200;
