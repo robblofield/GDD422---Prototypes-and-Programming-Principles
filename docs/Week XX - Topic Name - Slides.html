@@ -1,1 +1,150 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Week XX – Topic Name – Slides</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- RaRa theme CSS -->
+  <link rel="stylesheet" href="assets/rara-games-devtools.css" />
+
+  <!-- Prism.js for syntax highlighting -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism-tomorrow.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/plugins/autoloader/prism-autoloader.min.js"></script>
+</head>
+<body>
+
+  <!-- Optional: simple header; tweak or remove if you want -->
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-main">
+          <div class="brand-dot"></div>
+          <span>RaRa Game Dev Tools</span>
+        </div>
+        <div class="brand-course">
+          <!-- MODULE CODE + TITLE HERE -->
+          GDD422 – Prototypes &amp; Programming Principles
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="lecture-page">
+
+    <!-- LECTURE HEADER -->
+    <header class="lecture-header">
+      <h1><!-- LECTURE TITLE HERE -->Mathf: Clamp &amp; Round</h1>
+
+      <div class="lecture-meta-line">
+        <!-- MODULE TITLE + WEEK INFO HERE -->
+        GDD422 – Week 05
+      </div>
+
+      <div class="tags">
+        <!-- TAGS / TOPICS HERE -->
+        <span class="tag">C#</span>
+        <span class="tag">Mathf</span>
+        <span class="tag">Debugging</span>
+      </div>
+
+      <p class="lecture-aim">
+        <!-- AIM TEXT HERE -->
+        Aim: Explore how to clamp and round values safely when working with player stats and UI.
+      </p>
+    </header>
+
+    <hr />
+
+    <!-- LECTURE SLIDES SECTION -->
+    <section class="lecture-section" id="slides">
+      <h2>Lecture Slides</h2>
+
+      <!-- GAMMA EMBED BLOCK -->
+      <div class="gamma-embed">
+        <div class="gamma-embed-inner">
+          <!-- Replace src with your Gamma embed URL -->
+          <iframe
+            src="https://gamma.app/embed/your-embed-id-here"
+            loading="lazy"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+    </section>
+
+    <hr />
+
+    <!-- APPENDICES / CODE EXAMPLES -->
+    <section class="lecture-section appendix-section" id="appendices">
+      <h2>Appendices / Code Examples</h2>
+
+      <!-- CODE BLOCK 1 -->
+      <article class="code-example" id="code-block-1">
+        <div class="code-header">
+          <div class="code-title">Code Block 1 – <!-- Short description here -->Basic Clamp Example</div>
+          <div class="code-ref">Appendix #01</div>
+        </div>
+
+        <pre class="language-csharp"><code class="language-csharp">
+// Paste your C# code here
+// Example:
+public float ClampHealth(float current, float min, float max)
+{
+    return Mathf.Clamp(current, min, max);
+}
+        </code></pre>
+
+        <blockquote>
+          <!-- NOTES ABOUT THIS CODE BLOCK -->
+          This example shows how to prevent health from going below zero or above a defined maximum using <code>Mathf.Clamp</code>.
+        </blockquote>
+      </article>
+
+      <!-- CODE BLOCK 2 -->
+      <article class="code-example" id="code-block-2">
+        <div class="code-header">
+          <div class="code-title">Code Block 2 – <!-- Short description here -->Rounding for UI</div>
+          <div class="code-ref">Appendix #02</div>
+        </div>
+
+        <pre class="language-csharp"><code class="language-csharp">
+// Paste your C# code here
+// Example:
+public string FormatXP(float xp)
+{
+    int rounded = Mathf.RoundToInt(xp);
+    return $"XP: {rounded}";
+}
+        </code></pre>
+
+        <blockquote>
+          <!-- NOTES ABOUT THIS CODE BLOCK -->
+          Here we round a float to the nearest whole number using <code>Mathf.RoundToInt</code> before displaying it in UI text.
+        </blockquote>
+      </article>
+
+      <!-- Duplicate the <article class="code-example"> block above for more code blocks as needed -->
+
+    </section>
+
+    <!-- OPTIONAL: RELATED LABS / DOWNLOADS -->
+    <section class="lecture-section">
+      <h2>Related Labs &amp; Downloads</h2>
+      <div class="resource-links">
+        <!-- Update links/paths as appropriate -->
+        <a class="resource-pill" href="../Labs/05. Week 05 - Topic Name/">
+          🧪 Week 05 Lab Files
+        </a>
+        <a class="resource-pill" href="https://github.com/YourOrg/YourRepo">
+          📦 Sample Project on GitHub
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+</body>
+</html>
