@@ -122,7 +122,8 @@
     <!-- APPENDICES / CODE EXAMPLES -->
     <section class="lecture-section appendix-section" id="appendices">
       <h2>Appendices / Code Examples</h2>
-
+<details>
+<summary>💡 Hints (click to expand)</summary>
       <!-- CODE BLOCK 1 -->
       <article class="code-example" id="code-block-1">
         <div class="code-header">
@@ -167,7 +168,9 @@ public class Player : MonoBehaviour
           Make sure you’re adding the movement onto the current position and using <code>deltaTime</code>, otherwise the player will move inconsistently or far too quickly.
         </blockquote>
       </article>
-
+  </details>
+<details>
+<summary>💡 Hints (click to expand)</summary>
       <!-- CODE BLOCK 2 -->
       <article class="code-example" id="code-block-2">
         <div class="code-header">
@@ -252,7 +255,9 @@ public class Player : MonoBehaviour
           If clamping doesn’t work, check that the camera is tagged “MainCamera” and that you calculated min/max using <code>ViewportToWorldPoint</code> with the correct coordinates.
         </blockquote>
       </article>
-
+  </details>
+<details>
+<summary>💡 Hints (click to expand)</summary>
       <!-- CODE BLOCK 3 -->
       <article class="code-example" id="code-block-3">
         <div class="code-header">
@@ -385,8 +390,9 @@ public class LaserProjectile : MonoBehaviour
           If your laser doesn’t move or even appear, double-check that the prefab has a <code>Rigidbody2D</code> with zero gravity and that you assigned the prefab reference in the Inspector.
         </blockquote>
       </article>
-
-
+</details>
+<details>
+<summary>💡 Hints (click to expand)</summary>
       <!-- CODE BLOCK 4 -->
       <article class="code-example" id="code-block-4">
         <div class="code-header">
@@ -528,7 +534,9 @@ public class Player : MonoBehaviour
           If the firing speed seems wrong or never stops, make sure you're only starting the coroutine once and stopping it correctly when the button is released.
         </blockquote>
       </article>
-
+  </details>
+<details>
+<summary>💡 Hints (click to expand)</summary>
       <!-- CODE BLOCK 5 -->
       <article class="code-example" id="code-block-5">
         <div class="code-header">
@@ -583,7 +591,9 @@ public class EnemyPathing : MonoBehaviour
           If no waypoints print to the Console, confirm that the <code>pathRoot</code> object is assigned and that the waypoint transforms are children of it in the correct order.
         </blockquote>
       </article>
-
+          </details>
+<details>
+<summary>💡 Hints (click to expand)</summary>
            <!-- CODE BLOCK 6 -->
       <article class="code-example" id="code-block-6">
         <div class="code-header">
@@ -684,12 +694,13 @@ public class EnemyPathing : MonoBehaviour
 }
 
         </code></pre>
-
+</details>
           <blockquote>
           <!-- NOTES ABOUT THIS CODE BLOCK -->
           If the enemy jumps or stops early, check that its starting position is set to the first waypoint and that the distance threshold allows it to reliably “arrive” before advancing.
         </blockquote>
       </article>
+        </details>
           
 
     </section>
