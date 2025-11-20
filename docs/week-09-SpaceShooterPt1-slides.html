@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -122,15 +123,15 @@
     <!-- APPENDICES / CODE EXAMPLES -->
     <section class="lecture-section appendix-section" id="appendices">
       <h2>Appendices / Code Examples</h2>
-<details>
-<summary>💡 Hints (click to expand)</summary>
+
       <!-- CODE BLOCK 1 -->
       <article class="code-example" id="code-block-1">
         <div class="code-header">
           <div class="code-title">Code Block 1 – <!-- Short description here -->Player Movement</div>
           <div class="code-ref">Appendix #01</div>
         </div>
-
+<details>
+<summary>💡 Hints (click to expand)</summary>
         <pre class="language-csharp"><code class="language-csharp">
 using UnityEngine;
 
@@ -162,22 +163,22 @@ public class Player : MonoBehaviour
 }
 
         </code></pre>
+  </details>
 
         <blockquote>
           <!-- NOTES ABOUT THIS CODE BLOCK -->
           Make sure you’re adding the movement onto the current position and using <code>deltaTime</code>, otherwise the player will move inconsistently or far too quickly.
         </blockquote>
       </article>
-  </details>
-<details>
-<summary>💡 Hints (click to expand)</summary>
+  
       <!-- CODE BLOCK 2 -->
       <article class="code-example" id="code-block-2">
         <div class="code-header">
           <div class="code-title">Code Block 2 – <!-- Short description here -->Screen Boundaries.</div>
           <div class="code-ref">Appendix #02</div>
         </div>
-
+<details>
+<summary>💡 Hints (click to expand)</summary>
         <pre class="language-csharp"><code class="language-csharp">
 using UnityEngine;
 
@@ -249,21 +250,23 @@ public class Player : MonoBehaviour
 }
 
         </code></pre>
+</details>
 
         <blockquote>
           <!-- NOTES ABOUT THIS CODE BLOCK -->
           If clamping doesn’t work, check that the camera is tagged “MainCamera” and that you calculated min/max using <code>ViewportToWorldPoint</code> with the correct coordinates.
         </blockquote>
       </article>
-  </details>
-<details>
-<summary>💡 Hints (click to expand)</summary>
+  
+
       <!-- CODE BLOCK 3 -->
       <article class="code-example" id="code-block-3">
         <div class="code-header">
           <div class="code-title">Code Block 3 – <!-- Short description here -->Preliminary Laser Firing</div>
           <div class="code-ref">Appendix #03</div>
         </div>
+        <details>
+<summary>💡 Hints (click to expand)</summary>
 <code>Player.cs</code>
         <pre class="language-csharp"><code class="language-csharp">
 using UnityEngine;
@@ -384,21 +387,22 @@ public class LaserProjectile : MonoBehaviour
 
           
         </code></pre>
+</details>
 
         <blockquote>
           <!-- NOTES ABOUT THIS CODE BLOCK -->
           If your laser doesn’t move or even appear, double-check that the prefab has a <code>Rigidbody2D</code> with zero gravity and that you assigned the prefab reference in the Inspector.
         </blockquote>
       </article>
-</details>
-<details>
-<summary>💡 Hints (click to expand)</summary>
+
       <!-- CODE BLOCK 4 -->
       <article class="code-example" id="code-block-4">
         <div class="code-header">
           <div class="code-title">Code Block 4 – <!-- Short description here -->Continuous Firing With a Coroutine</div>
           <div class="code-ref">Appendix #04</div>
         </div>
+        <details>
+<summary>💡 Hints (click to expand)</summary>
 <code>Player.cs</code>
         <pre class="language-csharp"><code class="language-csharp">
 using UnityEngine;
@@ -529,20 +533,21 @@ public class Player : MonoBehaviour
 }
 
           </code></pre>
+</details>
           <blockquote>
           <!-- NOTES ABOUT THIS CODE BLOCK -->
           If the firing speed seems wrong or never stops, make sure you're only starting the coroutine once and stopping it correctly when the button is released.
         </blockquote>
       </article>
-  </details>
-<details>
-<summary>💡 Hints (click to expand)</summary>
+
       <!-- CODE BLOCK 5 -->
       <article class="code-example" id="code-block-5">
         <div class="code-header">
           <div class="code-title">Code Block 5 – <!-- Short description here -->Enemy Waypoints Setup & Debug</div>
           <div class="code-ref">Appendix #05</div>
         </div>
+        <details>
+<summary>💡 Hints (click to expand)</summary>
 <code>EnemyPathing.cs</code>
         <pre class="language-csharp"><code class="language-csharp">
 using UnityEngine;
@@ -585,21 +590,22 @@ public class EnemyPathing : MonoBehaviour
 }
 
         </code></pre>
+</details>
 
           <blockquote>
           <!-- NOTES ABOUT THIS CODE BLOCK -->
           If no waypoints print to the Console, confirm that the <code>pathRoot</code> object is assigned and that the waypoint transforms are children of it in the correct order.
         </blockquote>
       </article>
-          </details>
-<details>
-<summary>💡 Hints (click to expand)</summary>
-           <!-- CODE BLOCK 6 -->
+
+      <!-- CODE BLOCK 6 -->
       <article class="code-example" id="code-block-6">
         <div class="code-header">
           <div class="code-title">Code Block 6 – <!-- Short description here -->Moving the Enemy With MoveTowards</div>
           <div class="code-ref">Appendix #06</div>
         </div>
+        <details>
+<summary>💡 Hints (click to expand)</summary>
 <code>EnemyPathing.cs</code>
         <pre class="language-csharp"><code class="language-csharp">
 using UnityEngine;
@@ -700,7 +706,6 @@ public class EnemyPathing : MonoBehaviour
           If the enemy jumps or stops early, check that its starting position is set to the first waypoint and that the distance threshold allows it to reliably “arrive” before advancing.
         </blockquote>
       </article>
-        </details>
           
 
     </section>
@@ -723,3 +728,4 @@ public class EnemyPathing : MonoBehaviour
 
 </body>
 </html>
+```
