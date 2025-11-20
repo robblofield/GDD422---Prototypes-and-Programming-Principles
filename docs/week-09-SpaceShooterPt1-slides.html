@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="data:image/svg+xml,
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
+<text y='.9em' font-size='90'>🕹️</text>
+</svg>">
+
+  <meta charset="UTF-8" />
+  <title>Week 09 – Space Shooter Pt. 1 | Game Dev With Rob</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- RaRa theme CSS -->
+  <link rel="stylesheet" href="assets/rara-games-devtools.css" />
+
+  <!-- Prism.js for syntax highlighting -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism-tomorrow.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/plugins/autoloader/prism-autoloader.min.js"></script>
+</head>
+<body>
+
+  <!-- Top site header -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-main">
+          <div class="brand-dot"></div>
+          <span>Game Dev With Rob 🕹️</span>
+        </div>
+        <div class="brand-course">
+          <!-- MODULE CODE + TITLE HERE -->
+          GDD422 – Prototypes &amp; Programming Principles
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="lecture-page">
+
+    <!-- LECTURE HEADER (now static, not sticky) -->
+    <header class="lecture-header">
+      <h1><!-- LECTURE TITLE HERE -->Space Shooter Pt. 1</h1>
+
+      <div class="lecture-meta-line">
+        <!-- MODULE TITLE + WEEK INFO HERE -->
+        GDD422 – Week 09
+      </div>
+
+      <div class="tags">
+        <!-- TAGS / TOPICS HERE -->
+        <span class="tag">C#</span>
+        <span class="tag">Lab</span>
+        <span class="tag">2D Arcade</span>
+      </div>
+
+      <p class="lecture-aim">
+        <!-- AIM TEXT HERE -->
+        Aim: Start building a fun and frantic arcade-style shmup in Unity C#.
+      </p>
+    </header>
+
+    <hr />
+
+ <!-- GAMMA EMBED BLOCK -->
+<section class="lecture-section" id="slides">
+  <h2>Lecture Slides</h2>
+
+  <!-- FULLSCREEN TOGGLE BUTTON -->
+  <button id="fullscreenBtn" class="resource-pill" style="margin-bottom: 1rem;">
+    ⛶ Fullscreen Slides
+  </button>
+
+  <!-- EMBED WRAPPER -->
+  <div class="gamma-embed">
+    <div class="gamma-embed-inner">
+
+      <iframe
+        id="gammaFrame"
+        src="https://gamma.app/embed/e842znwz41ztvgw"
+        loading="lazy"
+        allowfullscreen
+        allow="fullscreen"
+        style="border: 0;"
+      ></iframe>
+
+    </div>
+  </div>
+</section>
+
+<!-- FULLSCREEN JS -->
+<script>
+  const iframe = document.getElementById('gammaFrame');
+  const btn = document.getElementById('fullscreenBtn');
+
+  btn.addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+      iframe.requestFullscreen().then(() => {
+        btn.textContent = "⛶ Exit Fullscreen";
+      }).catch(err => {
+        console.error("Fullscreen error: ", err);
+      });
+    } else {
+      document.exitFullscreen().then(() => {
+        btn.textContent = "⛶ Fullscreen Slides";
+      });
+    }
+  });
+
+  // Ensure the button resets if user exits with ESC or browser UI
+  document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement) {
+      btn.textContent = "⛶ Fullscreen Slides";
+    }
+  });
+</script>
+
+
+
+    <hr />
+
+    <!-- APPENDICES / CODE EXAMPLES -->
+    <section class="lecture-section appendix-section" id="appendices">
+      <h2>Appendices / Code Examples</h2>
+
+      <!-- CODE BLOCK 1 -->
+      <article class="code-example" id="code-block-1">
+        <div class="code-header">
+          <div class="code-title">Code Block 1 – <!-- Short description here -->Player Movement</div>
+          <div class="code-ref">Appendix #01</div>
+        </div>
+
+        <pre class="language-csharp"><code class="language-csharp">
+using UnityEngine;
+
+public class Player : MonoBehaviour
+{
+    // How fast the player moves in units per second
+    public float moveSpeed = 10f;
+
+    // Input values read each frame
+    private float moveX;
+    private float moveY;
+
+    private void Update()
+    {
+        // 1. Read horizontal and vertical input (-1 to +1)
+        moveX = Input.GetAxis("Horizontal");
+        moveY = Input.GetAxis("Vertical");
+
+        // 2. Turn input into a movement vector
+        //    Multiply by moveSpeed and deltaTime for smooth, frame-independent motion
+        Vector2 movement = new Vector2(moveX, moveY) * moveSpeed * Time.deltaTime;
+
+        // 3. Add movement onto the current position
+        Vector3 newPos = transform.position + (Vector3)movement;
+
+        // 4. Apply the new position back to the Transform
+        transform.position = newPos;
+    }
+}
+
+        </code></pre>
+
+        <blockquote>
+          <!-- NOTES ABOUT THIS CODE BLOCK -->
+          Make sure you’re adding the movement onto the current position and using <code>deltaTime</code>, otherwise the player will move inconsistently or far too quickly.
+        </blockquote>
+      </article>
+
+      <!-- CODE BLOCK 2 -->
+      <article class="code-example" id="code-block-2">
+        <div class="code-header">
+          <div class="code-title">Code Block 2 – <!-- Short description here -->Screen Boundaries.</div>
+          <div class="code-ref">Appendix #02</div>
+        </div>
+
+        <pre class="language-csharp"><code class="language-csharp">
+using UnityEngine;
+
+public class Player : MonoBehaviour
+{
+    // Movement speed in units per second
+    public float moveSpeed = 10f;
+
+    // Input values read each frame
+    private float moveX;
+    private float moveY;
+
+    // Padding from the edges of the screen
+    public float paddingLeft   = 0.5f;
+    public float paddingRight  = 0.5f;
+    public float paddingTop    = 0.5f;
+    public float paddingBottom = 0.5f;
+
+    // Calculated world-space bounds for the player
+    private float xMin;
+    private float xMax;
+    private float yMin;
+    private float yMax;
+
+    private void Start()
+    {
+        // Calculate the world-space edges of the camera view once at the start
+        Camera cam = Camera.main;
+        if (cam == null)
+        {
+            Debug.LogWarning("Player: No MainCamera found. Please tag your camera as 'MainCamera'.");
+            return;
+        }
+
+        // Left and right edges in world space
+        Vector3 leftEdge  = cam.ViewportToWorldPoint(new Vector3(0f, 0.5f, 0f));
+        Vector3 rightEdge = cam.ViewportToWorldPoint(new Vector3(1f, 0.5f, 0f));
+
+        // Bottom and top edges in world space
+        Vector3 bottomEdge = cam.ViewportToWorldPoint(new Vector3(0.5f, 0f, 0f));
+        Vector3 topEdge    = cam.ViewportToWorldPoint(new Vector3(0.5f, 1f, 0f));
+
+        // Apply padding so the ship doesn't touch the exact screen edge
+        xMin = leftEdge.x   + paddingLeft;
+        xMax = rightEdge.x  - paddingRight;
+        yMin = bottomEdge.y + paddingBottom;
+        yMax = topEdge.y    - paddingTop;
+    }
+
+    private void Update()
+    {
+        // 1. Read horizontal and vertical input (-1 to +1)
+        moveX = Input.GetAxis("Horizontal");
+        moveY = Input.GetAxis("Vertical");
+
+        // 2. Turn input into a movement vector
+        Vector2 movement = new Vector2(moveX, moveY) * moveSpeed * Time.deltaTime;
+
+        // 3. Calculate the tentative new position
+        Vector3 newPos = transform.position + (Vector3)movement;
+
+        // 4. Clamp X and Y so the player stays within the screen bounds
+        float clampedX = Mathf.Clamp(newPos.x, xMin, xMax);
+        float clampedY = Mathf.Clamp(newPos.y, yMin, yMax);
+
+        // 5. Apply the clamped position (we keep the original Z)
+        transform.position = new Vector3(clampedX, clampedY, newPos.z);
+    }
+}
+
+        </code></pre>
+
+        <blockquote>
+          <!-- NOTES ABOUT THIS CODE BLOCK -->
+          If clamping doesn’t work, check that the camera is tagged “MainCamera” and that you calculated min/max using <code>ViewportToWorldPoint</code> with the correct coordinates.
+        </blockquote>
+      </article>
+
+      <!-- CODE BLOCK 3 -->
+      <article class="code-example" id="code-block-3">
+        <div class="code-header">
+          <div class="code-title">Code Block 3 – <!-- Short description here -->Preliminary Laser Firing</div>
+          <div class="code-ref">Appendix #03</div>
+        </div>
+<code>Player.cs</code>
+        <pre class="language-csharp"><code class="language-csharp">
+using UnityEngine;
+
+public class Player : MonoBehaviour
+{
+    // ----- Movement -----
+    public float moveSpeed = 10f;
+
+    private float moveX;
+    private float moveY;
+
+    public float paddingLeft   = 0.5f;
+    public float paddingRight  = 0.5f;
+    public float paddingTop    = 0.5f;
+    public float paddingBottom = 0.5f;
+
+    private float xMin;
+    private float xMax;
+    private float yMin;
+    private float yMax;
+
+    // ----- Firing (single shot) -----
+    // Prefab of the laser to spawn
+    public GameObject laserPrefab;
+
+    // How fast the laser travels upwards
+    public float laserSpeed = 15f;
+
+    private void Start()
+    {
+        // Setup screen bounds for clamping
+        Camera cam = Camera.main;
+        if (cam == null)
+        {
+            Debug.LogWarning("Player: No MainCamera found.");
+            return;
+        }
+
+        Vector3 leftEdge   = cam.ViewportToWorldPoint(new Vector3(0f, 0.5f, 0f));
+        Vector3 rightEdge  = cam.ViewportToWorldPoint(new Vector3(1f, 0.5f, 0f));
+        Vector3 bottomEdge = cam.ViewportToWorldPoint(new Vector3(0.5f, 0f, 0f));
+        Vector3 topEdge    = cam.ViewportToWorldPoint(new Vector3(0.5f, 1f, 0f));
+
+        xMin = leftEdge.x   + paddingLeft;
+        xMax = rightEdge.x  - paddingRight;
+        yMin = bottomEdge.y + paddingBottom;
+        yMax = topEdge.y    - paddingTop;
+    }
+
+    private void Update()
+    {
+        HandleMovement();
+        HandleSingleShotFire();
+    }
+
+    private void HandleMovement()
+    {
+        // Read input each frame
+        moveX = Input.GetAxis("Horizontal");
+        moveY = Input.GetAxis("Vertical");
+
+        // Convert input to movement
+        Vector2 movement = new Vector2(moveX, moveY) * moveSpeed * Time.deltaTime;
+        Vector3 newPos = transform.position + (Vector3)movement;
+
+        // Clamp within screen bounds
+        float clampedX = Mathf.Clamp(newPos.x, xMin, xMax);
+        float clampedY = Mathf.Clamp(newPos.y, yMin, yMax);
+
+        transform.position = new Vector3(clampedX, clampedY, newPos.z);
+    }
+
+    private void HandleSingleShotFire()
+    {
+        // Fire one laser when SPACE is pressed down
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (laserPrefab == null)
+            {
+                Debug.LogWarning("Player: No laserPrefab assigned.");
+                return;
+            }
+
+            // Spawn a new laser at the player's position
+            GameObject laserInstance = Instantiate(
+                laserPrefab,
+                transform.position,
+                Quaternion.identity
+            );
+
+            // Give the laser an upward velocity
+            Rigidbody2D rb = laserInstance.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.velocity = new Vector2(0f, laserSpeed);
+            }
+        }
+    }
+}
+
+
+        </code></pre>
+          <code>LaserProjectile.cs</code>
+        <code>
+using UnityEngine;
+
+public class LaserProjectile : MonoBehaviour
+{
+    // When this object is no longer visible by any camera,
+    // Unity calls this automatically.
+    private void OnBecameInvisible()
+    {
+        // Clean up the projectile so it doesn't live forever off-screen
+        Destroy(gameObject);
+    }
+}
+
+          
+        </code>
+
+        <blockquote>
+          <!-- NOTES ABOUT THIS CODE BLOCK -->
+          If your laser doesn’t move or even appear, double-check that the prefab has a <code>Rigidbody2D</code> with zero gravity and that you assigned the prefab reference in the Inspector.
+        </blockquote>
+      </article>
+
+
+      <!-- CODE BLOCK 4 -->
+      <article class="code-example" id="code-block-4">
+        <div class="code-header">
+          <div class="code-title">Code Block 4 – <!-- Short description here -->Continuous Firing With a Coroutine</div>
+          <div class="code-ref">Appendix #04</div>
+        </div>
+<code>Player.cs</code>
+        <pre class="language-csharp"><code class="language-csharp">
+      <!-- Duplicate the <article class="code-example"> block above for more code blocks as needed -->
+
+    </section>
+
+    <!-- OPTIONAL: RELATED LABS / DOWNLOADS -->
+    <section class="lecture-section">
+      <h2>Related Labs &amp; Downloads</h2>
+      <div class="resource-links">
+        <!-- Update links/paths as appropriate -->
+        <a class="resource-pill" href="../Labs/05. Week 05 - Topic Name/">
+          🧪 Week 05 Lab Files
+        </a>
+        <a class="resource-pill" href="https://github.com/YourOrg/YourRepo">
+          📦 Sample Project on GitHub
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+</body>
+</html>
