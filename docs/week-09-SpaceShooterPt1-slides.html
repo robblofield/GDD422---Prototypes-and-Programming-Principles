@@ -395,7 +395,302 @@ public class LaserProjectile : MonoBehaviour
         </div>
 <code>Player.cs</code>
         <pre class="language-csharp"><code class="language-csharp">
-      <!-- Duplicate the <article class="code-example"> block above for more code blocks as needed -->
+using UnityEngine;
+using System.Collections;  // Needed for IEnumerator and coroutines
+
+public class Player : MonoBehaviour
+{
+    // ----- Movement -----
+    public float moveSpeed = 10f;
+
+    private float moveX;
+    private float moveY;
+
+    public float paddingLeft   = 0.5f;
+    public float paddingRight  = 0.5f;
+    public float paddingTop    = 0.5f;
+    public float paddingBottom = 0.5f;
+
+    private float xMin;
+    private float xMax;
+    private float yMin;
+    private float yMax;
+
+    // ----- Firing (continuous) -----
+    public GameObject laserPrefab;   // Laser to spawn
+    public float laserSpeed = 15f;   // How fast lasers travel upwards
+    public float firingInterval = 0.2f; // Delay between shots while firing
+
+    // Reference to the running coroutine (if any)
+    private Coroutine firingCoroutine;
+
+    private void Start()
+    {
+        // Setup screen bounds
+        Camera cam = Camera.main;
+        if (cam == null)
+        {
+            Debug.LogWarning("Player: No MainCamera found.");
+            return;
+        }
+
+        Vector3 leftEdge   = cam.ViewportToWorldPoint(new Vector3(0f, 0.5f, 0f));
+        Vector3 rightEdge  = cam.ViewportToWorldPoint(new Vector3(1f, 0.5f, 0f));
+        Vector3 bottomEdge = cam.ViewportToWorldPoint(new Vector3(0.5f, 0f, 0f));
+        Vector3 topEdge    = cam.ViewportToWorldPoint(new Vector3(0.5f, 1f, 0f));
+
+        xMin = leftEdge.x   + paddingLeft;
+        xMax = rightEdge.x  - paddingRight;
+        yMin = bottomEdge.y + paddingBottom;
+        yMax = topEdge.y    - paddingTop;
+    }
+
+    private void Update()
+    {
+        HandleMovement();
+        HandleContinuousFire();
+    }
+
+    private void HandleMovement()
+    {
+        // Read input
+        moveX = Input.GetAxis("Horizontal");
+        moveY = Input.GetAxis("Vertical");
+
+        // Apply movement
+        Vector2 movement = new Vector2(moveX, moveY) * moveSpeed * Time.deltaTime;
+        Vector3 newPos = transform.position + (Vector3)movement;
+
+        // Clamp within bounds
+        float clampedX = Mathf.Clamp(newPos.x, xMin, xMax);
+        float clampedY = Mathf.Clamp(newPos.y, yMin, yMax);
+
+        transform.position = new Vector3(clampedX, clampedY, newPos.z);
+    }
+
+    private void HandleContinuousFire()
+    {
+        // Start firing when Fire1 is pressed
+        if (Input.GetButtonDown("Fire1"))
+        {
+            if (firingCoroutine == null)
+            {
+                firingCoroutine = StartCoroutine(FireContinuously());
+            }
+        }
+
+        // Stop firing when Fire1 is released
+        if (Input.GetButtonUp("Fire1"))
+        {
+            if (firingCoroutine != null)
+            {
+                StopCoroutine(firingCoroutine);
+                firingCoroutine = null;
+            }
+        }
+    }
+
+    private IEnumerator FireContinuously()
+    {
+        // Loop forever until stopped from outside
+        while (true)
+        {
+            if (laserPrefab != null)
+            {
+                // Spawn a laser at the player's position
+                GameObject laserInstance = Instantiate(
+                    laserPrefab,
+                    transform.position,
+                    Quaternion.identity
+                );
+
+                // Give the laser upward velocity
+                Rigidbody2D rb = laserInstance.GetComponent<Rigidbody2D>();
+                if (rb != null)
+                {
+                    rb.velocity = new Vector2(0f, laserSpeed);
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Player: No laserPrefab assigned.");
+            }
+
+            // Wait for the firing interval before spawning the next shot
+            yield return new WaitForSeconds(firingInterval);
+        }
+    }
+}
+
+          </code></pre>
+          <blockquote>
+          <!-- NOTES ABOUT THIS CODE BLOCK -->
+          If the firing speed seems wrong or never stops, make sure you're only starting the coroutine once and stopping it correctly when the button is released.
+        </blockquote>
+      </article>
+
+      <!-- CODE BLOCK 5 -->
+      <article class="code-example" id="code-block-5">
+        <div class="code-header">
+          <div class="code-title">Code Block 5 – <!-- Short description here -->Enemy Waypoints Setup & Debug</div>
+          <div class="code-ref">Appendix #05</div>
+        </div>
+<code>EnemyPathing.cs</code>
+        <pre class="language-csharp"><code class="language-csharp">
+using UnityEngine;
+using System.Collections.Generic; // Needed for List<>
+
+public class EnemyPathing : MonoBehaviour
+{
+    // Parent object that holds the waypoint children (e.g. "Path_01")
+    public Transform pathRoot;
+
+    // List of waypoints the enemy will eventually follow
+    public List<Transform> waypoints = new List<Transform>();
+
+    private void Start()
+    {
+        // Safety check – make sure a path has been assigned
+        if (pathRoot == null)
+        {
+            Debug.LogWarning("EnemyPathing: No pathRoot assigned on " + gameObject.name);
+            return;
+        }
+
+        // Populate the waypoints list from all children of pathRoot
+        foreach (Transform child in pathRoot)
+        {
+            // Each child under pathRoot is treated as one waypoint
+            waypoints.Add(child);
+        }
+
+        // Log each waypoint so we can check the order in the Console
+        for (int i = 0; i < waypoints.Count; i++)
+        {
+            Transform wp = waypoints[i];
+            Debug.Log(
+                $"Waypoint {i} -> {wp.name} at position {wp.position}",
+                this
+            );
+        }
+    }
+}
+
+        </code></pre>
+
+          <blockquote>
+          <!-- NOTES ABOUT THIS CODE BLOCK -->
+          If no waypoints print to the Console, confirm that the <code>pathRoot</code> object is assigned and that the waypoint transforms are children of it in the correct order.
+        </blockquote>
+      </article>
+
+           <!-- CODE BLOCK 6 -->
+      <article class="code-example" id="code-block-6">
+        <div class="code-header">
+          <div class="code-title">Code Block 6 – <!-- Short description here -->Moving the Enemy With MoveTowards</div>
+          <div class="code-ref">Appendix #06</div>
+        </div>
+<code>EnemyPathing.cs</code>
+        <pre class="language-csharp"><code class="language-csharp">
+using UnityEngine;
+using System.Collections.Generic;
+
+public class EnemyPathing : MonoBehaviour
+{
+    // Parent object that holds the waypoint children
+    public Transform pathRoot;
+
+    // Ordered list of waypoints to follow
+    public List<Transform> waypoints = new List<Transform>();
+
+    // Movement speed along the path
+    public float moveSpeed = 3f;
+
+    // Index of the current waypoint we are moving towards
+    private int currentIndex = 0;
+
+    // How close is "close enough" to consider a waypoint reached
+    public float arriveThreshold = 0.1f;
+
+    private void Start()
+    {
+        if (pathRoot == null)
+        {
+            Debug.LogWarning("EnemyPathing: No pathRoot assigned on " + gameObject.name);
+            return;
+        }
+
+        // Fill the waypoints list from children of pathRoot
+        foreach (Transform child in pathRoot)
+        {
+            waypoints.Add(child);
+        }
+
+        if (waypoints.Count == 0)
+        {
+            Debug.LogWarning("EnemyPathing: No waypoint children found under " + pathRoot.name);
+            return;
+        }
+
+        // Start the enemy at the first waypoint position
+        transform.position = waypoints[0].position;
+
+        // Optional: log the waypoint order once, like in Appendix 05
+        for (int i = 0; i < waypoints.Count; i++)
+        {
+            Transform wp = waypoints[i];
+            Debug.Log($"Waypoint {i} -> {wp.name} at position {wp.position}", this);
+        }
+    }
+
+    private void Update()
+    {
+        // Only move if we have waypoints to follow
+        if (waypoints.Count == 0) return;
+
+        FollowPath();
+    }
+
+    private void FollowPath()
+    {
+        // If we've already passed the last waypoint, destroy the enemy
+        if (currentIndex >= waypoints.Count)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        // Get the current target waypoint
+        Transform targetWaypoint = waypoints[currentIndex];
+
+        // Move towards the target waypoint at a steady speed
+        transform.position = Vector2.MoveTowards(
+            transform.position,
+            targetWaypoint.position,
+            moveSpeed * Time.deltaTime
+        );
+
+        // Check how far we are from the target
+        float distanceToTarget = Vector2.Distance(transform.position, targetWaypoint.position);
+
+        // If close enough, move on to the next waypoint
+        if (distanceToTarget < arriveThreshold)
+        {
+            currentIndex++;
+
+            // If that was the last waypoint, the object will be cleaned up next frame
+        }
+    }
+}
+
+        </code></pre>
+
+          <blockquote>
+          <!-- NOTES ABOUT THIS CODE BLOCK -->
+          If the enemy jumps or stops early, check that its starting position is set to the first waypoint and that the distance threshold allows it to reliably “arrive” before advancing.
+        </blockquote>
+      </article>
+          
 
     </section>
 
